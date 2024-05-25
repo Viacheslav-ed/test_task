@@ -4,7 +4,7 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { BlockchainService } from './blockchain/blockchain.service';
 import { BalanceDto } from './dto/balance.dto';
 import { TransferDto } from './dto/transfer.dto';
-import { PrivateKey } from './private-key/private-key.decorator';
+import { PrivateKey } from './private_key/private_key.decorator';
 
 @ApiBearerAuth()
 @Controller()
@@ -21,7 +21,7 @@ export class AppController {
   async transfer(
     @PrivateKey() privateKey: string,
     @Body() transferDto: TransferDto,
-  ) {
+  ): Promise<string> {
     return await this.blockchainService.transfer(privateKey, transferDto);
   }
 }

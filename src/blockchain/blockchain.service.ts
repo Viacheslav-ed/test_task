@@ -42,7 +42,10 @@ export class BlockchainService {
     return balance;
   }
 
-  async transfer(privateKey: string, transferDto: TransferDto) {
+  async transfer(
+    privateKey: string,
+    transferDto: TransferDto,
+  ): Promise<string> {
     const { contractAddress, userAddress, recipientAddress, amount } =
       transferDto;
     console.log(
@@ -53,5 +56,35 @@ export class BlockchainService {
       recipientAddress,
       amount,
     );
+    console.log(await this.erc20Support(contractAddress));
+    return 'tx hash';
+  }
+
+  /**
+   * Since most ERC20 contracts do not support ERC165, we will determine
+   * whether a contract supports the ERC20 interface by the presence
+   * of selectors of the functions we need in its bytecode.
+   */
+  private async erc20Support(contractAddress: string): Promise<boolean> {
+    const provider = this.provider();
+    const bytecode = await provider.getCode(contractAddress);
+
+    const isBalanceOf = bytecode.includes(
+      ethers.id('balanceOf(address)').slice(2, 10),
+    );
+    const isTransfer = bytecode.includes(
+      ethers.id('transfer(address,uint256)').slice(2, 10),
+    );
+    const isTransferFrom = bytecode.includes(
+      ethers.id('transferFrom(address,address,uint256)').slice(2, 10),
+    );
+    console.log(isBalanceOf, isTransfer, isTransferFrom);
+
+    return isBalanceOf && isTransfer && isTransferFrom;
+  }
+
+  private async erc20Decimals(contractAddress: string): Promise<bigint> {
+    const contract = this.contract(contractAddress);
+    return await contract.decimals();
   }
 }
