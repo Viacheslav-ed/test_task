@@ -27,7 +27,9 @@ export class TransferDto {
   @IsNotEmpty()
   readonly recipientAddress: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    default: 1.55,
+  })
   @IsNotEmpty()
   @IsNumber()
   readonly amount: number;

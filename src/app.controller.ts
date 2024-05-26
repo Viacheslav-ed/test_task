@@ -4,7 +4,7 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { BlockchainService } from './blockchain/blockchain.service';
 import { BalanceDto } from './dto/balance.dto';
 import { TransferDto } from './dto/transfer.dto';
-import { PrivateKey } from './private_key/private_key.decorator';
+import { PrivateKey } from './decorators/private_key.decorator';
 
 @ApiBearerAuth()
 @Controller()

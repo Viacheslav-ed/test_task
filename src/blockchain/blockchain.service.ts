@@ -35,7 +35,7 @@ export class BlockchainService {
         userAddress,
         wallet.address,
       );
-      console.log(allowance, transferAmount);
+
       if (allowance < transferAmount)
         throw new BadRequestException('Insufficient allowance');
 

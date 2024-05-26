@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { BlockchainService } from './blockchain/blockchain.service';
 
 @Module({
   imports: [ConfigModule.forRoot()],
   controllers: [AppController],
-  providers: [AppService, BlockchainService],
+  providers: [BlockchainService],
 })
 export class AppModule {}
