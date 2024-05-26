@@ -1,73 +1,39 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Backend WEB3 Test task
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Task: Build a web application that allows users to interact with an ERC20 contract on
+the Ethereum blockchain using web3.js and Nest.js.
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+The test task was completed using NestJS and ethers.js. Two routes were created to retrieve the balance of a specified token and to transfer the specified token. To authenticate, you need to add a private key as a Bearer token. RPC of the desired blockchain is specified in **.env**, by default the public RPC of **bsc testnet** is used.
 
-## Installation
+Routs
 
-```bash
-$ npm install
+- GET /balance/<*contract address*>/<*user address*> - Returns the balance of the specified token for the specified address. Before the request, the contract address is checked for compatibility with the ERC20 interface.
+- POST / - Rout performs a transfer of the specified token between the specified addresses. Before the request, compatibility of the contract with the ERC20 interface and sufficient token balance are checked. If the specified sender differs from the authorized wallet, an allowance check is performed for the authorized wallet. Request returns the transaction hash of the transfer. Parameters are passed in the request body, the amount is specified in user friendly units, can be a floating-point number:
+
+```text
+{
+  "contractAddress": string,
+  "userAddress": string,
+  "recipientAddress": string,
+  "amount": number
+}
 ```
 
-## Running the app
+## Start
 
-```bash
-# development
-$ npm run start
+- Copy the `.env.example` file into `.env` and add yours provider.
+- Install the dependencies ```npm install```
+- Run app ```npm start```
 
-# watch mode
-$ npm run start:dev
+Swagger has been added to nest, so you can use http://localhost:3000/api to work with the app. You can use a specially added test token [USD Mock](https://testnet.bscscan.com/address/0x697edd7c1a16b439151157237332af7d8caf2e9c) in bsc testnet where it is possible to change any number of tokens. You can also use the following addresses with private keys:
 
-# production mode
-$ npm run start:prod
-```
+- 0x79Ee822Bd648D280bf778CeB2DE59df0e6e0704D - 0be1f909285aaa1aefa77509627954bbd66011f33fceadd84c9dc1cfd6f64650
+- 0x2Bd251A29940b9Ba60dd72d2878EDf60dd6f77Ed - 38790ee7d95a68ba9a9b4d0507f78ed606febf52f7d51a6fd552bce530a26374
 
-## Test
+## Tests
 
-```bash
-# unit tests
-$ npm run test
+Tests added only for the Auth guard.
+Run tests ```npm test```
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

@@ -10,6 +10,10 @@ const abi = require('../../erc20.abi.json').abi;
 export class BlockchainService {
   async balance(balanceDto: BalanceDto): Promise<bigint> {
     const { contractAddress, userAddress } = balanceDto;
+
+    if (!(await this._erc20Support(contractAddress)))
+      throw new BadRequestException('Wrong contract address');
+
     return await this._balance(contractAddress, userAddress);
   }
 
